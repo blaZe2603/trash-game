@@ -108,6 +108,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""shoot"",
+                    ""type"": ""Button"",
+                    ""id"": ""58749152-d640-4b95-9a91-6162ddfdf222"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=1,pressPoint=0.3)"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -176,6 +185,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""390ccc12-b58e-4598-ba35-1d17fc2b7480"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e46d367c-4714-443a-ade8-e3a38eb91c5a"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -186,6 +217,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_player = asset.FindActionMap("player", throwIfNotFound: true);
         m_player_collect = m_player.FindAction("collect", throwIfNotFound: true);
         m_player_move = m_player.FindAction("move", throwIfNotFound: true);
+        m_player_shoot = m_player.FindAction("shoot", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -268,6 +300,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_player_collect;
     private readonly InputAction m_player_move;
+    private readonly InputAction m_player_shoot;
     /// <summary>
     /// Provides access to input actions defined in input action map "player".
     /// </summary>
@@ -287,6 +320,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "player/move".
         /// </summary>
         public InputAction @move => m_Wrapper.m_player_move;
+        /// <summary>
+        /// Provides access to the underlying input action "player/shoot".
+        /// </summary>
+        public InputAction @shoot => m_Wrapper.m_player_shoot;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -319,6 +356,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @move.started += instance.OnMove;
             @move.performed += instance.OnMove;
             @move.canceled += instance.OnMove;
+            @shoot.started += instance.OnShoot;
+            @shoot.performed += instance.OnShoot;
+            @shoot.canceled += instance.OnShoot;
         }
 
         /// <summary>
@@ -336,6 +376,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @move.started -= instance.OnMove;
             @move.performed -= instance.OnMove;
             @move.canceled -= instance.OnMove;
+            @shoot.started -= instance.OnShoot;
+            @shoot.performed -= instance.OnShoot;
+            @shoot.canceled -= instance.OnShoot;
         }
 
         /// <summary>
@@ -390,5 +433,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMove(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "shoot" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnShoot(InputAction.CallbackContext context);
     }
 }
