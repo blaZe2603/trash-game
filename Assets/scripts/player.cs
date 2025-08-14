@@ -1,78 +1,127 @@
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.Universal;
 
-public class player : MonoBehaviour
+public class Player : MonoBehaviour
 {
-    private Vector2 move_input;
+    [Header("GameObjects")]
+    private Vector2 moveInput;
     private Rigidbody rb;
-    private PlayerInputActions player_input;
-    [SerializeField] float speed;
-    [SerializeField] float object_detect_radius;
-    public LayerMask object_mask;
+    private PlayerInputActions playerInput;
     public Transform holdPoint;
     private GameObject heldObject;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private Rigidbody heldRb;
+    public LayerMask objectMask;
+
+
+    [Header("Constants")]
+    [SerializeField] float objectDetectRadius;
+    [SerializeField] float speed;
+    public float minPower = 5f;
+    public float maxPower = 20f;
+    public float chargeSpeed = 10f;
+
+    private float currentPower;
+    private bool isCharging;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        player_input = new PlayerInputActions();
-        player_input.Enable();
-        player_input.player.collect.performed += collect_object;
+
+        playerInput = new PlayerInputActions();
+        playerInput.Enable();
+
+        playerInput.player.collect.performed += CollectObject;
+        playerInput.player.shoot.started += ChargeShoot;
+        playerInput.player.shoot.canceled += ReleaseShot;
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
-        move_input = player_input.player.move.ReadValue<Vector2>();
-
-        Vector3 direction = new Vector3(move_input.x, 0f, move_input.y);
+        // Player movement
+        moveInput = playerInput.player.move.ReadValue<Vector2>();
+        Vector3 direction = new Vector3(moveInput.x, 0f, moveInput.y);
 
         if (direction.sqrMagnitude > 1f)
             direction.Normalize();
 
         rb.linearVelocity = direction * speed;
-        // if (heldObject != null)
-        // {
-        //     heldObject.transform.position = holdPoint.position;
-        // }
-    }
 
-    public void collect_object(InputAction.CallbackContext context)
-    {
-        if (context.performed)
+        // Move held object along with player
+        if (heldObject != null && heldRb != null)
         {
-            if (heldObject == null)
-            {
-                heldObject = near();
-                if (heldObject != null)
-                {
-                    heldObject.transform.SetParent(holdPoint);
-                    heldObject.transform.localPosition = Vector3.zero;
-                }
+            Vector3 targetPos = holdPoint.position;
+            Vector3 moveDir = (targetPos - heldRb.position) / Time.fixedDeltaTime;
+            heldRb.linearVelocity = moveDir;
+        }
 
-            }
-            else
-            {
-                heldObject.transform.SetParent(null);
-                heldObject = null;
-            }
-
+        // Charge power while holding shoot
+        if (isCharging && heldObject != null)
+        {
+            currentPower += chargeSpeed * Time.deltaTime;
+            currentPower = Mathf.Clamp(currentPower, minPower, maxPower);
         }
     }
-    public GameObject near()
+
+    // collecting near objects
+    public void CollectObject(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+
+        if (heldObject == null)
+        {
+            heldObject = Near();
+            if (heldObject != null)
+            {
+                heldRb = heldObject.GetComponent<Rigidbody>();
+                heldRb.isKinematic = false;
+            }
+        }
+        else
+        {
+            heldObject = null;
+            heldRb = null;
+        }
+    }
+
+    //if started shooting then set this to true so can start powering the shot
+    public void ChargeShoot(InputAction.CallbackContext context)
+    {
+        if (!isCharging)
+            isCharging = true;
+
+        currentPower = minPower;
+    }
+
+    // shooting if we have an object
+    public void ReleaseShot(InputAction.CallbackContext context)
+    {
+        if (!isCharging) return;
+
+        isCharging = false;
+
+        if (heldObject != null && heldRb != null)
+        {
+            // Shoot nad set heldobject to null
+            heldRb.linearVelocity = new Vector3(1f, 1f, 0f) * currentPower;
+            heldObject = null;
+            heldRb = null;
+        }
+    }
+
+    public GameObject Near()
     {
         float minDist = float.PositiveInfinity;
-        float dist;
         GameObject nearestObject = null;
 
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position,object_detect_radius,object_mask);
+        Collider[] hitColliders = Physics.OverlapSphere(
+            transform.position,
+            objectDetectRadius,
+            objectMask
+        );
 
         foreach (var hitCollider in hitColliders)
         {
-            dist = (hitCollider.transform.position - transform.position).sqrMagnitude; 
+            float dist = (hitCollider.transform.position - transform.position).sqrMagnitude;
             if (dist < minDist)
             {
                 minDist = dist;

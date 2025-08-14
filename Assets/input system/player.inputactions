@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "shoot",
+                    "type": "Button",
+                    "id": "58749152-d640-4b95-9a91-6162ddfdf222",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Hold(duration=1,pressPoint=0.3)",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -90,6 +99,28 @@
                     "action": "move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "390ccc12-b58e-4598-ba35-1d17fc2b7480",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e46d367c-4714-443a-ade8-e3a38eb91c5a",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
