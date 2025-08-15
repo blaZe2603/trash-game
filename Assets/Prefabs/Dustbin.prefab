@@ -151,3 +151,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   eps: 5
+  maxHealth: 1
+  colorChangeInterval: 2
