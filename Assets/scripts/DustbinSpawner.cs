@@ -55,7 +55,7 @@ public class DustbinSpawner : MonoBehaviour
         for (int i = 0; i < wave.dustbinCount; i++)
         {
             Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
-            GameObject d = Instantiate(wave.dustbinPrefab, spawnPoint.position, Quaternion.identity);
+            GameObject d = Instantiate(wave.dustbinPrefab, spawnPoint.position, Quaternion.Euler(-90f, 0f, 0f));
             aliveDustbins.Add(d);
             Dustbin.BinType randType = (Dustbin.BinType)Random.Range(0, System.Enum.GetValues(typeof(Dustbin.BinType)).Length);
             d.GetComponent<Dustbin>().SetBinType(randType);

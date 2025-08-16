@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Dustbin : MonoBehaviour
@@ -40,6 +39,11 @@ public class Dustbin : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        
+    }
+
     void FixedUpdate()
     {
         Vector3 dir = player.position - transform.position;
@@ -68,7 +72,10 @@ public class Dustbin : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.gameObject.tag == GetComponent<Renderer>().material.color.ToString())
+        if (collision.collider.gameObject.CompareTag("Harazardous") && gameObject.CompareTag("Hazardous Bin") ||
+            collision.collider.gameObject.CompareTag("General") && gameObject.CompareTag("General Bin") ||
+            collision.collider.gameObject.CompareTag("Wet") && gameObject.CompareTag("Wet Bin") ||
+            collision.collider.gameObject.CompareTag("Recyclable") && gameObject.CompareTag("Recyclable Bin"))
         {
             Damage(1);
         }
@@ -77,7 +84,25 @@ public class Dustbin : MonoBehaviour
     private Color GetRandomColor()
     {
         Color[] colors = { Color.red, Color.blue, Color.green, Color.yellow };
-        return colors[Random.Range(0, colors.Length)];
+        Color toRet = colors[Random.Range(0, colors.Length)];
+        if (toRet == Color.red)
+        {
+            gameObject.tag = "Hazardous Bin";
+        }
+        if (toRet == Color.blue)
+        {
+            gameObject.tag = "General Bin";
+        }
+        if (toRet == Color.green)
+        {
+            gameObject.tag = "Wet Bin";
+        }
+        if (toRet == Color.yellow)
+        {
+            gameObject.tag = "Recyclable Bin";
+        }
+        Debug.Log(gameObject.tag);
+        return toRet;
 
     }
 

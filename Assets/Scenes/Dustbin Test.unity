@@ -294,7 +294,7 @@ MonoBehaviour:
   - {fileID: 1881154271}
   timeForWaves: 5
   waves:
-  - dustbinPrefab: {fileID: 6573896298471152806, guid: e2a4b46704e72eb47b4298254656b66a, type: 3}
+  - dustbinPrefab: {fileID: 616795704552264674, guid: f211b54a262fe5047a147d91d25b8156, type: 3}
     dustbinCount: 5
     spawnInterval: 1
 --- !u!4 &943996219
