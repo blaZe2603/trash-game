@@ -433,6 +433,9 @@ MonoBehaviour:
   - dustbinPrefab: {fileID: 616795704552264674, guid: f211b54a262fe5047a147d91d25b8156, type: 3}
     dustbinCount: 5
     spawnInterval: 1
+  currWave: 0
+  aliveDustbins: []
+  isWaveOn: 0
 --- !u!4 &943996219
 Transform:
   m_ObjectHideFlags: 0

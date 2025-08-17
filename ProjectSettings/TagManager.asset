@@ -9,6 +9,10 @@ TagManager:
   - General Bin
   - Recyclable Bin
   - Wet Bin
+  - Harazardous
+  - Wet
+  - General
+  - Recycable
   layers:
   - Default
   - TransparentFX
