@@ -80,7 +80,7 @@ public class Dustbin : MonoBehaviour
             Damage(1);
         }
     }
-
+    
     private Color GetRandomColor()
     {
         Color[] colors = { Color.red, Color.blue, Color.green, Color.yellow };

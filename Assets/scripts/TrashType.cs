@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class TrashType : MonoBehaviour
@@ -5,20 +6,19 @@ public class TrashType : MonoBehaviour
 
     private Renderer rend;
 
+    [SerializeField] float TimeToDestroy;
     void Start()
     {
         rend = GetComponent<Renderer>();
         rend.material.color = GetRandomColor();
+
+        StartCoroutine(DestroyAfterTime());
     }
 
-    void Update()
+    IEnumerator DestroyAfterTime()
     {
-        
-    }
-
-    void FixedUpdate()
-    {
-
+        yield return new WaitForSeconds(TimeToDestroy);
+        Destroy(gameObject);
     }
 
     private Color GetRandomColor()
