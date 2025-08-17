@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -19,6 +20,10 @@ public class Player : MonoBehaviour
     public float minPower = 5f;
     public float maxPower = 20f;
     public float chargeSpeed = 10f;
+    public int maxHealth = 6;
+    private int currHealth;
+    public float invincibilityTime = 1f;
+    private float invincibilityTimer;
 
     private float currentPower;
     private bool isCharging;
@@ -33,6 +38,27 @@ public class Player : MonoBehaviour
         playerInput.player.collect.performed += CollectObject;
         playerInput.player.shoot.started += ChargeShoot;
         playerInput.player.shoot.canceled += ReleaseShot;
+
+        currHealth = maxHealth;
+        invincibilityTimer = 0;
+    }
+
+    void Update()
+    {
+        if (currHealth <= 0)
+        {
+            SceneManager.LoadScene(0);
+        }
+        if (invincibilityTimer >= 0)
+        {
+            invincibilityTimer -= Time.deltaTime;
+        }
+        else
+        {
+            invincibilityTimer = 0F;
+        }
+        Debug.Log(currHealth);
+
     }
 
     void FixedUpdate()
@@ -130,5 +156,20 @@ public class Player : MonoBehaviour
         }
 
         return nearestObject;
+    }
+
+    void OnCollisionStay(Collision collision)
+    {
+        if (collision.collider.CompareTag("Recyclable Bin") ||
+        collision.collider.CompareTag("Wet Bin") ||
+        collision.collider.CompareTag("General Bin") ||
+        collision.collider.CompareTag("Hazardous Bin"))
+        {
+            if (invincibilityTimer == 0)
+            {
+                currHealth -= 1;
+                invincibilityTimer = invincibilityTime;
+            }
+        }
     }
 }

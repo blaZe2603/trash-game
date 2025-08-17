@@ -101,7 +101,7 @@ public class Dustbin : MonoBehaviour
         {
             gameObject.tag = "Recyclable Bin";
         }
-        Debug.Log(gameObject.tag);
+        // Debug.Log(gameObject.tag);
         return toRet;
 
     }
