@@ -17,9 +17,9 @@ public class DustbinSpawner : MonoBehaviour
 
     public Wave[] waves;
 
-    private int currWave = 0;
-    private List<GameObject> aliveDustbins = new List<GameObject>();
-    private bool isWaveOn = false;
+    public int currWave = 0;
+    public List<GameObject> aliveDustbins = new List<GameObject>();
+    public bool isWaveOn = false;
 
     void Start()
     {
