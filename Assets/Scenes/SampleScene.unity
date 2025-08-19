@@ -1721,15 +1721,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ca53054f48a4149aea7b42ddace874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeForWaves: 3
-  waves:
-  - dustbinPrefab: {fileID: 616795704552264674, guid: f211b54a262fe5047a147d91d25b8156, type: 3}
-    dustbinCount: 10
-    spawnInterval: 1
+  initialDelay: 2
+  waveDelay: 2
+  spawnInterval: 1
+  spawnRadius: 10
+  dustbinPrefab: {fileID: 616795704552264674, guid: f211b54a262fe5047a147d91d25b8156, type: 3}
+  startCount: 2
+  multiplier: 2
   currWave: 0
   aliveDustbins: []
-  isWaveOn: 0
-  SpawnRadius: 20
 --- !u!1001 &1934026803
 PrefabInstance:
   m_ObjectHideFlags: 0
