@@ -21,6 +21,7 @@ public class MainMenuUI : MonoBehaviour
         menu.SetActive(false);
         option.SetActive(true);
     }
+    
     public void back()
     {
         menu.SetActive(true);
