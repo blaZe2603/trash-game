@@ -13,7 +13,8 @@ public class Trash
 
 public class TrashSpawner : MonoBehaviour
 {
-
+    [SerializeField]float TrashSpawnRadius;
+    [SerializeField]float TrashHeight;
     public Trash trash;
     public GameObject dustbinSpawnerGameObject;
     private DustbinSpawner DnSt;
@@ -66,14 +67,20 @@ public class TrashSpawner : MonoBehaviour
     //     yield return new WaitForSeconds(timeForWaves);
     //     StartCoroutine(SpawnTrash(DnSt.waves[DnSt.currWave]));
     // }
-
+    public Vector3 distance()
+    {
+        float angle = Random.Range(0, 360);
+        float radius = Random.Range(0, TrashSpawnRadius);
+        Vector3 spawnPoint = new Vector3(Mathf.Cos(Mathf.Deg2Rad * angle) * radius, 0f, Mathf.Sin(Mathf.Deg2Rad * angle) * radius);
+        return spawnPoint;
+    }
     IEnumerator SpawnTrash()
     {
         isSpawning = true;
 
         while (DnSt.aliveDustbins.Count != 0)
         {
-            Vector3 spawnPoint = PointInCamera();
+            Vector3 spawnPoint = distance() + new Vector3(0f,TrashHeight,0f);
             Instantiate(trash.TrashPrefab, spawnPoint, Quaternion.Euler(-90f, 0f, 0f));
 
             float delay = (1f / (DnSt.currWave + 1)) < 0.2f ? 0.2f : (1f / (DnSt.currWave + 1));
