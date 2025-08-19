@@ -183,6 +183,7 @@ public class Player : MonoBehaviour
             {
                 currHealth -= 1;
                 invincibilityTimer = invincibilityTime;
+                collision.collider.gameObject.GetComponent<Dustbin>().Damage(1);
             }
         }
     }
