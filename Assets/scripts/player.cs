@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -12,8 +13,7 @@ public class Player : MonoBehaviour
     private GameObject heldObject;
     private Rigidbody heldRb;
     public LayerMask objectMask;
-
-
+    Vector3 direction;
     [Header("Constants")]
     [SerializeField] float objectDetectRadius;
     [SerializeField] float speed;
@@ -65,16 +65,30 @@ public class Player : MonoBehaviour
     {
         // Player movement
         moveInput = playerInput.player.move.ReadValue<Vector2>();
-        Vector3 direction = new Vector3(moveInput.x, 0f, moveInput.y);
+        direction = new Vector3(moveInput.x, 0f, moveInput.y);
+        
+        if (math.abs(direction.x) > 0)
+            holdPoint.localPosition = new Vector3(direction.x*2,0f,0f);
 
-        if (direction.sqrMagnitude > 1f)
-            direction.Normalize();
+        else if (math.abs(direction.z) > 0)
+            holdPoint.localPosition = new Vector3(0f,0f,direction.z*2);
+
+        if (direction.sqrMagnitude > 0.01f)
+        {
+            // place holdPoint in front of player
+            holdPoint.localPosition = direction.normalized * 2f;
+
+            // rotate holdPoint to face the direction
+            holdPoint.forward = direction.normalized;
+        }
+
 
         rb.linearVelocity = direction * speed;
 
         // Move held object along with player
         if (heldObject != null && heldRb != null)
         {
+            
             Vector3 targetPos = holdPoint.position;
             Vector3 moveDir = (targetPos - heldRb.position) / Time.fixedDeltaTime;
             heldRb.linearVelocity = moveDir;
@@ -128,7 +142,7 @@ public class Player : MonoBehaviour
         if (heldObject != null && heldRb != null)
         {
             // Shoot nad set heldobject to null
-            heldRb.linearVelocity = new Vector3(1f, 1f, 0f) * currentPower;
+            heldRb.linearVelocity = holdPoint.forward * currentPower;
             heldObject = null;
             heldRb = null;
         }

@@ -77,7 +77,8 @@ public class Dustbin : MonoBehaviour
             collision.collider.gameObject.CompareTag("Wet") && gameObject.CompareTag("Wet Bin") ||
             collision.collider.gameObject.CompareTag("Recyclable") && gameObject.CompareTag("Recyclable Bin"))
         {
-            Damage(1);
+            Destroy(gameObject);
+            Destroy(collision.gameObject);
         }
     }
     

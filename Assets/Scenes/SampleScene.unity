@@ -850,7 +850,7 @@ MonoBehaviour:
   speed: 15
   minPower: 5
   maxPower: 20
-  chargeSpeed: 2.5
+  chargeSpeed: 4
   maxHealth: 6
   invincibilityTime: 1
 --- !u!114 &763321520
@@ -1474,6 +1474,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05b125c994d01b245ab42150b726b99c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TrashSpawnRadius: 10
+  TrashHeight: 3
   trash:
     TrashPrefab: {fileID: 582706933038565309, guid: c13ab8bb424fff4429a801c213dc0ec8, type: 3}
     TrashInterval: 1
