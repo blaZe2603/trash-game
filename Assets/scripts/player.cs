@@ -128,7 +128,7 @@ public class Player : MonoBehaviour
         if (heldObject != null && heldRb != null)
         {
             // Shoot nad set heldobject to null
-            heldRb.linearVelocity = new Vector3(1f, 1f, 0f) * currentPower;
+            heldRb.linearVelocity = new Vector3(1.2f, 0f, 0f) * currentPower;
             heldObject = null;
             heldRb = null;
         }

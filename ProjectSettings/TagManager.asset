@@ -13,6 +13,7 @@ TagManager:
   - Wet
   - General
   - Recyclable
+  - Hazardous
   layers:
   - Default
   - TransparentFX
