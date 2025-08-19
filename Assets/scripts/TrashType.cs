@@ -27,19 +27,19 @@ public class TrashType : MonoBehaviour
         Color toRet = colors[Random.Range(0, colors.Length)];
         if (toRet == Color.red)
         {
-            gameObject.tag = "Hazardous Bin";
+            gameObject.tag = "Hazardous";
         }
         if (toRet == Color.blue)
         {
-            gameObject.tag = "General Bin";
+            gameObject.tag = "General";
         }
         if (toRet == Color.green)
         {
-            gameObject.tag = "Wet Bin";
+            gameObject.tag = "Wet";
         }
         if (toRet == Color.yellow)
         {
-            gameObject.tag = "Recyclable Bin";
+            gameObject.tag = "Recyclable";
         }
         Debug.Log(gameObject.tag);
         return toRet;
