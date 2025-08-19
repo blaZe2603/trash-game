@@ -850,7 +850,7 @@ MonoBehaviour:
   speed: 15
   minPower: 5
   maxPower: 20
-  chargeSpeed: 2.5
+  chargeSpeed: 4
   maxHealth: 6
   invincibilityTime: 1
 --- !u!114 &763321520
