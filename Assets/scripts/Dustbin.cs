@@ -72,7 +72,7 @@ public class Dustbin : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.gameObject.CompareTag("Harazardous") && gameObject.CompareTag("Hazardous Bin") ||
+        if (collision.collider.gameObject.CompareTag("Hazardous") && gameObject.CompareTag("Hazardous Bin") ||
             collision.collider.gameObject.CompareTag("General") && gameObject.CompareTag("General Bin") ||
             collision.collider.gameObject.CompareTag("Wet") && gameObject.CompareTag("Wet Bin") ||
             collision.collider.gameObject.CompareTag("Recyclable") && gameObject.CompareTag("Recyclable Bin"))

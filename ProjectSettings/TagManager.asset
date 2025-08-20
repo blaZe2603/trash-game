@@ -11,8 +11,10 @@ TagManager:
   - Wet Bin
   - Harazardous
   - Wet
-  - General
   - Recyclable
+  - General
+  - Hazardous
+  - trash_player
   layers:
   - Default
   - TransparentFX
