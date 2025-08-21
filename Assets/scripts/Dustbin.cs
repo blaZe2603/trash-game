@@ -79,6 +79,7 @@ public class Dustbin : MonoBehaviour
         {
             Destroy(gameObject);
             Destroy(collision.gameObject);
+            Debug.Log("Died");
         }
     }
     

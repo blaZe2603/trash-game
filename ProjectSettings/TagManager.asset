@@ -9,12 +9,12 @@ TagManager:
   - General Bin
   - Recyclable Bin
   - Wet Bin
-  - Harazardous
   - Wet
   - Recyclable
   - General
   - Hazardous
   - trash_player
+  - Hazardous
   layers:
   - Default
   - TransparentFX

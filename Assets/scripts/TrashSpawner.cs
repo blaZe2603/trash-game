@@ -1,13 +1,10 @@
 using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
-using UnityEngine.Rendering;
-using System.Net;
 
 [System.Serializable]
 public class Trash
 {
-    public GameObject TrashPrefab;
+    public GameObject[] TrashPrefabs;
     public float TrashInterval = 1f;
 }
 
@@ -23,25 +20,12 @@ public class TrashSpawner : MonoBehaviour
 
     void Start()
     {
-        // StartCoroutine(TrashWaveSpawner());
         DnSt = dustbinSpawnerGameObject.GetComponent<DustbinSpawner>();
 
     }
 
     void Update()
     {
-        // if (DnSt.aliveDustbins.Count == 0)
-        // {
-        //     if (DnSt.currWave < DnSt.waves.Length)
-        //     {
-        //         StartCoroutine(TrashWaveSpawner());
-        //     }
-        //     else
-        //     {
-        //         //complete
-        //     }
-        // }
-
         if (DnSt.aliveDustbins.Count != 0 && !isSpawning)
             StartCoroutine(SpawnTrash());
     }
@@ -60,13 +44,6 @@ public class TrashSpawner : MonoBehaviour
 
         return new Vector3(camPos.x + randX, fixedY, camPos.z + randZ);
     }
-
-
-    // IEnumerator TrashWaveSpawner()
-    // {
-    //     yield return new WaitForSeconds(timeForWaves);
-    //     StartCoroutine(SpawnTrash(DnSt.waves[DnSt.currWave]));
-    // }
     public Vector3 distance()
     {
         float angle = Random.Range(0, 360);
@@ -80,8 +57,12 @@ public class TrashSpawner : MonoBehaviour
 
         while (DnSt.aliveDustbins.Count != 0)
         {
-            Vector3 spawnPoint = distance() + new Vector3(0f,TrashHeight,0f);
-            Instantiate(trash.TrashPrefab, spawnPoint, Quaternion.Euler(-90f, 0f, 0f));
+            int randomIndex = Random.Range(0, trash.TrashPrefabs.Length);
+            GameObject selectedTrash = trash.TrashPrefabs[randomIndex];
+            Vector3 spawnPoint = distance() + new Vector3(0f, TrashHeight, 0f);
+            GameObject spawnedTrash = Instantiate(selectedTrash, spawnPoint, Quaternion.Euler(-90f, 0f, 0f));
+            TrashType trashType = spawnedTrash.GetComponent<TrashType>();
+            trashType.SetTrashType(randomIndex);
 
             float delay = (1f / (DnSt.currWave + 1)) < 0.2f ? 0.2f : (1f / (DnSt.currWave + 1));
             yield return new WaitForSeconds(delay);
@@ -89,17 +70,4 @@ public class TrashSpawner : MonoBehaviour
 
         isSpawning = false; 
     }
-
-    // IEnumerator NullCheck(GameObject dustbin)
-    // {
-    //     yield return new WaitUntil(() => dustbin == null);
-    //     for (int i = aliveDustbins.Count - 1; i >= 0; i--)
-    //     {
-    //         if (aliveDustbins[i] == null)
-    //         {
-    //             aliveDustbins.RemoveAt(i);
-    //         }
-    //     }
-    // }
-
 }
