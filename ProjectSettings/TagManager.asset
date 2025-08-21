@@ -15,6 +15,7 @@ TagManager:
   - Hazardous
   - trash_player
   - Hazardous
+  - audio
   layers:
   - Default
   - TransparentFX
