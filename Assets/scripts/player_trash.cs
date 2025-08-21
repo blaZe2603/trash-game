@@ -8,7 +8,7 @@ public class player_trash : MonoBehaviour
     private Vector2 moveInput;
     private Rigidbody rb;
     Vector3 direction;
-    private Trash_player trashInputActions;
+    private TrashPlayerActions trashInputActions;
     public LayerMask objectMask;
 
     [Header("Constants")]
@@ -18,7 +18,7 @@ public class player_trash : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
 
-        trashInputActions = new Trash_player();
+        trashInputActions = new TrashPlayerActions();
         trashInputActions.Enable();
 
     }
