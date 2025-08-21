@@ -1,3 +1,4 @@
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -24,9 +25,13 @@ public class Player : MonoBehaviour
     private int currHealth;
     public float invincibilityTime = 1f;
     private float invincibilityTimer;
+    public int score;
 
     private float currentPower;
     private bool isCharging;
+
+    public TextMeshProUGUI healthText;
+    public TextMeshProUGUI scoreText;
 
     void Start()
     {
@@ -41,6 +46,7 @@ public class Player : MonoBehaviour
 
         currHealth = maxHealth;
         invincibilityTimer = 0;
+        score = 0;
     }
 
     void Update()
@@ -58,6 +64,9 @@ public class Player : MonoBehaviour
             invincibilityTimer = 0F;
         }
         // Debug.Log(currHealth);
+        healthText.text = "Health : " + currHealth;
+        scoreText.text = "Score : " + score;
+
 
     }
 

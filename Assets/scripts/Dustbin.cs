@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Dustbin : MonoBehaviour
@@ -88,9 +89,11 @@ public class Dustbin : MonoBehaviour
                 (collision.collider.CompareTag("Wet") && CompareTag("Wet Bin")) ||
                 (collision.collider.CompareTag("Recyclable") && CompareTag("Recyclable Bin")))
             {
+                GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().score++;
                 Damage(1);
                 Destroy(collision.gameObject);
             }
+            
         }
         else
         {
