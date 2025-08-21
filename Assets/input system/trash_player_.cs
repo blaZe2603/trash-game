@@ -72,7 +72,7 @@ using UnityEngine.InputSystem.Utilities;
 /// }
 /// </code>
 /// </example>
-public partial class @Trash_player_: IInputActionCollection2, IDisposable
+public partial class @TrashPlayerActions: IInputActionCollection2, IDisposable
 {
     /// <summary>
     /// Provides access to the underlying asset instance.
@@ -82,7 +82,7 @@ public partial class @Trash_player_: IInputActionCollection2, IDisposable
     /// <summary>
     /// Constructs a new instance.
     /// </summary>
-    public @Trash_player_()
+    public @TrashPlayerActions()
     {
         asset = InputActionAsset.FromJson(@"{
     ""name"": ""trash_player_"",
@@ -188,9 +188,9 @@ public partial class @Trash_player_: IInputActionCollection2, IDisposable
         m_trash_move_collect = m_trash_move.FindAction("collect", throwIfNotFound: true);
     }
 
-    ~@Trash_player_()
+    ~@TrashPlayerActions()
     {
-        UnityEngine.Debug.Assert(!m_trash_move.enabled, "This will cause a leak and performance issues, Trash_player_.trash_move.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_trash_move.enabled, "This will cause a leak and performance issues, TrashPlayerActions.trash_move.Disable() has not been called.");
     }
 
     /// <summary>
@@ -273,12 +273,12 @@ public partial class @Trash_player_: IInputActionCollection2, IDisposable
     /// </summary>
     public struct Trash_moveActions
     {
-        private @Trash_player_ m_Wrapper;
+        private @TrashPlayerActions m_Wrapper;
 
         /// <summary>
         /// Construct a new instance of the input action map wrapper class.
         /// </summary>
-        public Trash_moveActions(@Trash_player_ wrapper) { m_Wrapper = wrapper; }
+        public Trash_moveActions(@TrashPlayerActions wrapper) { m_Wrapper = wrapper; }
         /// <summary>
         /// Provides access to the underlying input action "trash_move/move".
         /// </summary>
