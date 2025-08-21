@@ -10,8 +10,10 @@ TagManager:
   - Recyclable Bin
   - Wet Bin
   - Wet
-  - General
   - Recyclable
+  - General
+  - Hazardous
+  - trash_player
   - Hazardous
   layers:
   - Default
