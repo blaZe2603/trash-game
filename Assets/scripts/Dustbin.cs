@@ -72,16 +72,32 @@ public class Dustbin : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.gameObject.CompareTag("Hazardous") && gameObject.CompareTag("Hazardous Bin") ||
-            collision.collider.gameObject.CompareTag("General") && gameObject.CompareTag("General Bin") ||
-            collision.collider.gameObject.CompareTag("Wet") && gameObject.CompareTag("Wet Bin") ||
-            collision.collider.gameObject.CompareTag("Recyclable") && gameObject.CompareTag("Recyclable Bin"))
+        if (!collision.collider.CompareTag("Hazardous") &&
+            !collision.collider.CompareTag("General") &&
+            !collision.collider.CompareTag("Wet") &&
+            !collision.collider.CompareTag("Recyclable"))
+            return;
+
+        TrashType trash = collision.collider.GetComponent<TrashType>();
+        if (trash == null) return;
+
+        if (trash.isThrown)
         {
-            Destroy(gameObject);
+            if ((collision.collider.CompareTag("Hazardous") && CompareTag("Hazardous Bin")) ||
+                (collision.collider.CompareTag("General") && CompareTag("General Bin")) ||
+                (collision.collider.CompareTag("Wet") && CompareTag("Wet Bin")) ||
+                (collision.collider.CompareTag("Recyclable") && CompareTag("Recyclable Bin")))
+            {
+                Damage(1);
+                Destroy(collision.gameObject);
+            }
+        }
+        else
+        {
             Destroy(collision.gameObject);
-            Debug.Log("Died");
         }
     }
+
     
     private Color GetRandomColor()
     {

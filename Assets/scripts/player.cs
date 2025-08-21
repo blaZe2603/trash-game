@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
         {
             invincibilityTimer = 0F;
         }
-        Debug.Log(currHealth);
+        // Debug.Log(currHealth);
 
     }
 
@@ -110,6 +110,7 @@ public class Player : MonoBehaviour
         if (heldObject == null)
         {
             heldObject = Near();
+            heldObject.GetComponent<TrashType>().MarkAsThrown();
             if (heldObject != null)
             {
                 heldRb = heldObject.GetComponent<Rigidbody>();
@@ -141,11 +142,13 @@ public class Player : MonoBehaviour
 
         if (heldObject != null && heldRb != null)
         {
-            // Shoot nad set heldobject to null
+            TrashType trashType = heldObject.GetComponent<TrashType>();
+            trashType.MarkAsThrown();
             heldRb.linearVelocity = holdPoint.forward * currentPower;
             heldObject = null;
             heldRb = null;
         }
+
     }
 
     public GameObject Near()
