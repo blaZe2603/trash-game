@@ -3,45 +3,26 @@ using UnityEngine;
 
 public class TrashType : MonoBehaviour
 {
-
     private Renderer rend;
-
     [SerializeField] float TimeToDestroy;
+
+    private string[] typeTags = { "Hazardous", "General", "Wet", "Recyclable" };
+
     void Start()
     {
         rend = GetComponent<Renderer>();
-        rend.material.color = GetRandomColor();
-
         StartCoroutine(DestroyAfterTime());
+    }
+
+    public void SetTrashType(int index)
+    {
+        gameObject.tag = typeTags[index];
+        Debug.Log($"Spawned {gameObject.tag} trash");
     }
 
     IEnumerator DestroyAfterTime()
     {
         yield return new WaitForSeconds(TimeToDestroy);
         Destroy(gameObject);
-    }
-
-    private Color GetRandomColor()
-    {
-        Color[] colors = { Color.red, Color.blue, Color.green, Color.yellow };
-        Color toRet = colors[Random.Range(0, colors.Length)];
-        if (toRet == Color.red)
-        {
-            gameObject.tag = "Hazardous";
-        }
-        if (toRet == Color.blue)
-        {
-            gameObject.tag = "General";
-        }
-        if (toRet == Color.green)
-        {
-            gameObject.tag = "Wet";
-        }
-        if (toRet == Color.yellow)
-        {
-            gameObject.tag = "Recyclable";
-        }
-        Debug.Log(gameObject.tag);
-        return toRet;
     }
 }
