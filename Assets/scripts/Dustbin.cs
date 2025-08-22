@@ -95,7 +95,7 @@ public class Dustbin : MonoBehaviour
                 GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().score++;
                 Damage(1);
                 Destroy(collision.gameObject);
-                audio_Manager.PlaySound(audio_Manager.player_hit);
+                audio_Manager.PlaySound(audio_Manager.enemy_hit);
             }
             
         }
