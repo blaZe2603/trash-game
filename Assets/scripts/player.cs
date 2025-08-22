@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
     {
         if (currHealth <= 0)
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(2);
         }
         if (invincibilityTimer >= 0)
         {
