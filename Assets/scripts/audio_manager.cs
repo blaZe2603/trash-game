@@ -11,7 +11,7 @@ public class audio_manager : MonoBehaviour
     public AudioClip death;
     public AudioClip enemy_hit;
     public AudioClip player_hit;
-    public AudioClip convert;
+    
 
     void Awake()
     {

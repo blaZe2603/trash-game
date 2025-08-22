@@ -8,6 +8,8 @@ public class TrashType : MonoBehaviour
 
     private string[] typeTags = { "Hazardous", "General", "Wet", "Recyclable" };
 
+    public bool isThrown { get; private set; } = false;
+
     void Start()
     {
         rend = GetComponent<Renderer>();
@@ -18,6 +20,12 @@ public class TrashType : MonoBehaviour
     {
         gameObject.tag = typeTags[index];
         Debug.Log($"Spawned {gameObject.tag} trash");
+    }
+
+    public void MarkAsThrown()
+    {
+        isThrown = true;
+        Debug.Log("thrown");
     }
 
     IEnumerator DestroyAfterTime()

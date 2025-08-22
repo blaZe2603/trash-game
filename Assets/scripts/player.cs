@@ -1,3 +1,5 @@
+using System.Xml.Serialization;
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     [Header("GameObjects")]
+    audio_manager audio_Manager;
     private Vector2 moveInput;
     private Rigidbody rb;
     private PlayerInputActions playerInput;
@@ -24,10 +27,18 @@ public class Player : MonoBehaviour
     private int currHealth;
     public float invincibilityTime = 1f;
     private float invincibilityTimer;
+    public int score;
 
     private float currentPower;
     private bool isCharging;
 
+    public TextMeshProUGUI healthText;
+    public TextMeshProUGUI scoreText;
+
+    void Awake()
+    {
+        audio_Manager = GameObject.FindGameObjectWithTag("audio").GetComponent<audio_manager>();
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -41,13 +52,15 @@ public class Player : MonoBehaviour
 
         currHealth = maxHealth;
         invincibilityTimer = 0;
+        score = 0;
     }
 
     void Update()
     {
         if (currHealth <= 0)
         {
-            SceneManager.LoadScene(2);
+            audio_Manager.PlaySound(audio_Manager.death);
+            SceneManager.LoadSceneAsync(2);
         }
         if (invincibilityTimer >= 0)
         {
@@ -57,7 +70,10 @@ public class Player : MonoBehaviour
         {
             invincibilityTimer = 0F;
         }
-        Debug.Log(currHealth);
+        // Debug.Log(currHealth);
+        healthText.text = "Health : " + currHealth;
+        scoreText.text = "Score : " + score;
+
 
     }
 
@@ -110,6 +126,7 @@ public class Player : MonoBehaviour
         if (heldObject == null)
         {
             heldObject = Near();
+            heldObject.GetComponent<TrashType>().MarkAsThrown();
             if (heldObject != null)
             {
                 heldRb = heldObject.GetComponent<Rigidbody>();
@@ -141,11 +158,13 @@ public class Player : MonoBehaviour
 
         if (heldObject != null && heldRb != null)
         {
-            // Shoot nad set heldobject to null
+            TrashType trashType = heldObject.GetComponent<TrashType>();
+            trashType.MarkAsThrown();
             heldRb.linearVelocity = holdPoint.forward * currentPower;
             heldObject = null;
             heldRb = null;
         }
+
     }
 
     public GameObject Near()
@@ -182,6 +201,7 @@ public class Player : MonoBehaviour
             if (invincibilityTimer == 0)
             {
                 currHealth -= 1;
+                audio_Manager.PlaySound(audio_Manager.player_hit);
                 invincibilityTimer = invincibilityTime;
                 collision.collider.gameObject.GetComponent<Dustbin>().Damage(1);
             }
