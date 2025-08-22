@@ -8,7 +8,7 @@ public class Dustbin : MonoBehaviour
         Basic,
         ColorChanger
     }
-
+    audio_manager audio_Manager;
     [SerializeField] private float speed = 3f;
     [SerializeField] private float eps = 5f;
     [SerializeField] private int maxHealth = 1;
@@ -21,7 +21,10 @@ public class Dustbin : MonoBehaviour
 
     public BinType binType { get; private set; }
     private Renderer rend;
-
+    void Awake()
+    {
+        audio_Manager = GameObject.FindGameObjectWithTag("audio").GetComponent<audio_manager>();
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -92,6 +95,7 @@ public class Dustbin : MonoBehaviour
                 GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().score++;
                 Damage(1);
                 Destroy(collision.gameObject);
+                audio_Manager.PlaySound(audio_Manager.player_hit);
             }
             
         }

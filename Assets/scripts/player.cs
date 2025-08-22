@@ -1,3 +1,4 @@
+using System.Xml.Serialization;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
@@ -7,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     [Header("GameObjects")]
+    audio_manager audio_Manager;
     private Vector2 moveInput;
     private Rigidbody rb;
     private PlayerInputActions playerInput;
@@ -33,6 +35,10 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI healthText;
     public TextMeshProUGUI scoreText;
 
+    void Awake()
+    {
+        audio_Manager = GameObject.FindGameObjectWithTag("audio").GetComponent<audio_manager>();
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -53,6 +59,7 @@ public class Player : MonoBehaviour
     {
         if (currHealth <= 0)
         {
+            audio_Manager.PlaySound(audio_Manager.death);
             SceneManager.LoadScene(0);
         }
         if (invincibilityTimer >= 0)
@@ -194,6 +201,7 @@ public class Player : MonoBehaviour
             if (invincibilityTimer == 0)
             {
                 currHealth -= 1;
+                audio_Manager.PlaySound(audio_Manager.player_hit);
                 invincibilityTimer = invincibilityTime;
                 collision.collider.gameObject.GetComponent<Dustbin>().Damage(1);
             }
