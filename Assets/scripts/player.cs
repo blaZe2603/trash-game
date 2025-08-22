@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
         if (currHealth <= 0)
         {
             audio_Manager.PlaySound(audio_Manager.death);
-            SceneManager.LoadScene(0);
+            SceneManager.LoadSceneAsync(2);
         }
         if (invincibilityTimer >= 0)
         {
