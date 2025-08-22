@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class TrashType : MonoBehaviour
 {
+    private Coroutine destroyCoroutine;
+    private int originalLayer;
     private Renderer rend;
     [SerializeField] float TimeToDestroy;
 
@@ -12,8 +14,26 @@ public class TrashType : MonoBehaviour
 
     void Start()
     {
-        rend = GetComponent<Renderer>();
-        StartCoroutine(DestroyAfterTime());
+    rend = GetComponent<Renderer>();
+    originalLayer = gameObject.layer;
+    destroyCoroutine = StartCoroutine(DestroyAfterTime());
+
+    }
+    
+    void Update()
+    {
+        if (gameObject.layer == LayerMask.NameToLayer("thrownTrash"))
+        {
+            if (destroyCoroutine != null)
+            {
+                StopCoroutine(destroyCoroutine);
+                destroyCoroutine = null;
+            }
+        }
+        else if (destroyCoroutine == null && gameObject.layer != LayerMask.NameToLayer("thrownTrash"))
+        {
+            destroyCoroutine = StartCoroutine(DestroyAfterTime());
+        }
     }
 
     public void SetTrashType(int index)
@@ -26,11 +46,24 @@ public class TrashType : MonoBehaviour
     {
         isThrown = true;
         gameObject.layer = LayerMask.NameToLayer("thrownTrash");
+        StartCoroutine(ChangeLayer());
+        
     }
-
+    IEnumerator ChangeLayer()
+    {
+        yield return new WaitForSeconds(1f);
+        gameObject.layer = LayerMask.NameToLayer("objects");
+    }
     IEnumerator DestroyAfterTime()
     {
-        yield return new WaitForSeconds(TimeToDestroy);
+        float elapsed = 0f;
+
+        while (elapsed < TimeToDestroy)
+        {
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
         Destroy(gameObject);
     }
 }
