@@ -967,8 +967,8 @@ MonoBehaviour:
   maxHealth: 6
   invincibilityTime: 1
   score: 0
-  healthText: {fileID: 0}
-  scoreText: {fileID: 0}
+  healthText: {fileID: 805807719}
+  scoreText: {fileID: 1380245021}
 --- !u!65 &598299924
 BoxCollider:
   m_ObjectHideFlags: 0

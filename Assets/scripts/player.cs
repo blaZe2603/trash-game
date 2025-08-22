@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     Vector3 direction;
     [Header("Constants")]
     [SerializeField] float objectDetectRadius;
+    [SerializeField] private float throwPower = 15f;
     [SerializeField] float speed;
     public float minPower = 5f;
     public float maxPower = 20f;
@@ -47,8 +48,6 @@ public class Player : MonoBehaviour
         playerInput.Enable();
 
         playerInput.player.collect.performed += CollectObject;
-        playerInput.player.shoot.started += ChargeShoot;
-        playerInput.player.shoot.canceled += ReleaseShot;
 
         currHealth = maxHealth;
         invincibilityTimer = 0;
@@ -104,7 +103,7 @@ public class Player : MonoBehaviour
         // Move held object along with player
         if (heldObject != null && heldRb != null)
         {
-            
+
             Vector3 targetPos = holdPoint.position;
             Vector3 moveDir = (targetPos - heldRb.position) / Time.fixedDeltaTime;
             heldRb.linearVelocity = moveDir;
@@ -118,7 +117,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    // collecting near objects
     public void CollectObject(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
@@ -126,47 +124,30 @@ public class Player : MonoBehaviour
         if (heldObject == null)
         {
             heldObject = Near();
-            heldObject.GetComponent<TrashType>().MarkAsThrown();
             if (heldObject != null)
             {
                 heldRb = heldObject.GetComponent<Rigidbody>();
                 heldRb.isKinematic = false;
+                heldObject.GetComponent<TrashType>().MarkAsThrown();
             }
         }
         else
         {
-            heldObject = null;
-            heldRb = null;
+            ThrowHeldObject();
         }
     }
 
-    //if started shooting then set this to true so can start powering the shot
-    public void ChargeShoot(InputAction.CallbackContext context)
+    private void ThrowHeldObject()
     {
-        if (!isCharging)
-            isCharging = true;
+        if (heldObject == null || heldRb == null) return;
 
-        currentPower = minPower;
+        heldRb.linearVelocity = holdPoint.forward * throwPower;
+
+        heldObject.GetComponent<TrashType>().MarkAsThrown();
+
+        heldObject = null;
+        heldRb = null;
     }
-
-    // shooting if we have an object
-    public void ReleaseShot(InputAction.CallbackContext context)
-    {
-        if (!isCharging) return;
-
-        isCharging = false;
-
-        if (heldObject != null && heldRb != null)
-        {
-            TrashType trashType = heldObject.GetComponent<TrashType>();
-            trashType.MarkAsThrown();
-            heldRb.linearVelocity = holdPoint.forward * currentPower;
-            heldObject = null;
-            heldRb = null;
-        }
-
-    }
-
     public GameObject Near()
     {
         float minDist = float.PositiveInfinity;
