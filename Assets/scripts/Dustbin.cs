@@ -23,7 +23,14 @@ public class Dustbin : MonoBehaviour
     private Renderer rend;
     void Awake()
     {
-        audio_Manager = GameObject.FindGameObjectWithTag("audio").GetComponent<audio_manager>();
+        try
+        {
+            audio_Manager = GameObject.FindGameObjectWithTag("audio").GetComponent<audio_manager>();
+        }
+        catch
+        {
+            Debug.Log("Awake");
+        }
     }
     void Start()
     {
@@ -95,7 +102,14 @@ public class Dustbin : MonoBehaviour
                 GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().score++;
                 Damage(1);
                 Destroy(collision.gameObject);
-                audio_Manager.PlaySound(audio_Manager.enemy_hit);
+                try
+                {
+                    audio_Manager.PlaySound(audio_Manager.enemy_hit);
+                }
+                catch
+                {
+                    Debug.Log("Its fine");
+                }
             }
             
         }

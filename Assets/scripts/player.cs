@@ -38,7 +38,14 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
-        audio_Manager = GameObject.FindGameObjectWithTag("audio").GetComponent<audio_manager>();
+        try
+        {
+            audio_Manager = GameObject.FindGameObjectWithTag("audio").GetComponent<audio_manager>();
+        }
+        catch
+        {
+            Debug.Log("hi");
+        }
     }
     void Start()
     {
@@ -182,7 +189,14 @@ public class Player : MonoBehaviour
             if (invincibilityTimer == 0)
             {
                 currHealth -= 1;
-                audio_Manager.PlaySound(audio_Manager.player_hit);
+                try
+                {
+                    audio_Manager.PlaySound(audio_Manager.player_hit);
+                }
+                catch
+                {
+                    Debug.Log("Its okay");
+                }
                 invincibilityTimer = invincibilityTime;
                 collision.collider.gameObject.GetComponent<Dustbin>().Damage(1);
             }
