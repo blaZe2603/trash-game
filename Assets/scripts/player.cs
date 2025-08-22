@@ -67,7 +67,14 @@ public class Player : MonoBehaviour
     {
         if (currHealth <= 0)
         {
-            audio_Manager.PlaySound(audio_Manager.death);
+            try
+            {
+                audio_Manager.PlaySound(audio_Manager.death);
+            }
+            catch
+            {
+                Debug.Log("Hi");
+            }
             SceneManager.LoadSceneAsync(3);
         }
         if (invincibilityTimer >= 0)
@@ -91,9 +98,10 @@ public class Player : MonoBehaviour
         moveInput = playerInput.player.move.ReadValue<Vector2>();
         direction = new Vector3(moveInput.x, 0f, moveInput.y);
 
-        if (direction.sqrMagnitude > 0.01f)
+        if (direction.sqrMagnitude > 0.1f)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+            Vector3 lookDir = new Vector3(direction.x, 0f, direction.z);
+            Quaternion targetRotation = Quaternion.LookRotation(lookDir, Vector3.up);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.fixedDeltaTime);
         }
 
@@ -143,13 +151,6 @@ public class Player : MonoBehaviour
             ThrowHeldObject();
         }
     }
-    // void LateUpdate()
-    // {
-    //     holdPoint.rotation = Quaternion.identity;
-    //     holdPoint.localPosition = new Vector3(1, 0, 0);
-    // }
-
-
     private void ThrowHeldObject()
     {
         if (heldObject == null || heldRb == null) return;
