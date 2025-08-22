@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     private GameObject heldObject;
     private Rigidbody heldRb;
     public LayerMask objectMask;
+    private Animator animator;
     Vector3 direction;
     [Header("Constants")]
     [SerializeField] float objectDetectRadius;
@@ -50,6 +51,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
 
         playerInput = new PlayerInputActions();
         playerInput.Enable();
@@ -106,6 +108,9 @@ public class Player : MonoBehaviour
 
 
         rb.linearVelocity = direction * speed;
+        float moveAmount = direction.magnitude; 
+        animator.SetFloat("MoveSpeed", moveAmount);
+
 
         // Move held object along with player
         if (heldObject != null && heldRb != null)
@@ -151,6 +156,7 @@ public class Player : MonoBehaviour
         heldRb.linearVelocity = holdPoint.forward * throwPower;
 
         heldObject.GetComponent<TrashType>().MarkAsThrown();
+        animator.SetTrigger("isThrowing");
 
         heldObject = null;
         heldRb = null;
