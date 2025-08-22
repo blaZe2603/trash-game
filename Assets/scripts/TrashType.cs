@@ -25,7 +25,7 @@ public class TrashType : MonoBehaviour
     public void MarkAsThrown()
     {
         isThrown = true;
-        Debug.Log("thrown");
+        gameObject.layer = LayerMask.NameToLayer("thrownTrash");
     }
 
     IEnumerator DestroyAfterTime()

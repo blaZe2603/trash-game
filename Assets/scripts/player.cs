@@ -90,44 +90,39 @@ public class Player : MonoBehaviour
         // Player movement
         moveInput = playerInput.player.move.ReadValue<Vector2>();
         direction = new Vector3(moveInput.x, 0f, moveInput.y);
-        
-        if (math.abs(direction.x) > 0)
-            holdPoint.localPosition = new Vector3(direction.x*2,0f,0f);
-
-        else if (math.abs(direction.z) > 0)
-            holdPoint.localPosition = new Vector3(0f,0f,direction.z*2);
 
         if (direction.sqrMagnitude > 0.01f)
         {
-            // place holdPoint in front of player
-            holdPoint.localPosition = direction.normalized * 2f;
-
-            // rotate holdPoint to face the direction
-            holdPoint.forward = direction.normalized;
+            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.fixedDeltaTime);
         }
 
+        // Update holdPoint position and rotation relative to player
+        Vector3 offset = new Vector3(0, 0f, 3f);
+        holdPoint.position = transform.position + transform.TransformDirection(offset);
+        holdPoint.rotation = transform.rotation;
 
+        // Apply player movement
         rb.linearVelocity = direction * speed;
-        float moveAmount = direction.magnitude; 
+        float moveAmount = direction.magnitude;
         animator.SetFloat("MoveSpeed", moveAmount);
-
 
         // Move held object along with player
         if (heldObject != null && heldRb != null)
         {
-
             Vector3 targetPos = holdPoint.position;
             Vector3 moveDir = (targetPos - heldRb.position) / Time.fixedDeltaTime;
             heldRb.linearVelocity = moveDir;
         }
 
-        // Charge power while holding shoot
+        // Charging throw logic
         if (isCharging && heldObject != null)
         {
             currentPower += chargeSpeed * Time.deltaTime;
             currentPower = Mathf.Clamp(currentPower, minPower, maxPower);
         }
     }
+
 
     public void CollectObject(InputAction.CallbackContext context)
     {
@@ -148,6 +143,12 @@ public class Player : MonoBehaviour
             ThrowHeldObject();
         }
     }
+    // void LateUpdate()
+    // {
+    //     holdPoint.rotation = Quaternion.identity;
+    //     holdPoint.localPosition = new Vector3(1, 0, 0);
+    // }
+
 
     private void ThrowHeldObject()
     {
