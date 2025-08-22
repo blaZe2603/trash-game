@@ -67,6 +67,7 @@ public class Player : MonoBehaviour
     {
         if (currHealth <= 0)
         {
+            GameManager.Instance.SetScore(score);
             try
             {
                 audio_Manager.PlaySound(audio_Manager.death);
