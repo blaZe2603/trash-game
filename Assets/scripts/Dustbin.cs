@@ -184,13 +184,6 @@ public class Dustbin : MonoBehaviour
         speed /= 2;
     }
     
-
-    IEnumerator speedBoost()
-    {
-        speed *= 2;
-        yield return new WaitForSeconds(3f);
-        speed /= 2;
-    }
     private Color GetRandomColor()
     {
         Color[] colors = { Color.red, Color.blue, Color.green, Color.yellow };
