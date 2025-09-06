@@ -67,7 +67,11 @@ public class Player : MonoBehaviour
     {
         if (currHealth <= 0)
         {
-            audio_Manager.PlaySound(audio_Manager.death);
+            try
+            {
+                audio_Manager.PlaySound(audio_Manager.death);
+            }
+            catch { }
             SceneManager.LoadSceneAsync(3);
         }
         if (invincibilityTimer >= 0)
@@ -85,43 +89,52 @@ public class Player : MonoBehaviour
 
     }
 
-    void FixedUpdate()
+void FixedUpdate()
+{
+    // Player movement input
+    moveInput = playerInput.player.move.ReadValue<Vector2>();
+    direction = new Vector3(moveInput.x, 0f, moveInput.y);
+
+    // Normalize so diagonal movement isn’t faster
+    Vector3 moveDir = direction.normalized;
+
+    // Apply movement
+    rb.linearVelocity = moveDir * speed;
+
+    // Rotate only if moving
+    if (moveDir.sqrMagnitude > 0.01f)
     {
-        // Player movement
-        moveInput = playerInput.player.move.ReadValue<Vector2>();
-        direction = new Vector3(moveInput.x, 0f, moveInput.y);
+        // Calculate angle only on XZ plane
+        float angle = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg;
+        Quaternion targetRotation = Quaternion.Euler(0f, angle, 0f);
 
-        if (direction.sqrMagnitude > 0.01f)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.fixedDeltaTime);
-        }
-
-        // Update holdPoint position and rotation relative to player
-        Vector3 offset = new Vector3(0, 0f, 3f);
-        holdPoint.position = transform.position + transform.TransformDirection(offset);
-        holdPoint.rotation = transform.rotation;
-
-        // Apply player movement
-        rb.linearVelocity = direction * speed;
-        float moveAmount = direction.magnitude;
-        animator.SetFloat("MoveSpeed", moveAmount);
-
-        // Move held object along with player
-        if (heldObject != null && heldRb != null)
-        {
-            Vector3 targetPos = holdPoint.position;
-            Vector3 moveDir = (targetPos - heldRb.position) / Time.fixedDeltaTime;
-            heldRb.linearVelocity = moveDir;
-        }
-
-        // Charging throw logic
-        if (isCharging && heldObject != null)
-        {
-            currentPower += chargeSpeed * Time.deltaTime;
-            currentPower = Mathf.Clamp(currentPower, minPower, maxPower);
-        }
+        // Smooth rotate
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.fixedDeltaTime);
     }
+
+    // Update holdPoint
+    Vector3 offset = new Vector3(0, 0f, 3f);
+    holdPoint.position = transform.position + transform.TransformDirection(offset);
+    holdPoint.rotation = transform.rotation;
+
+    // Animate
+    animator.SetFloat("MoveSpeed", moveDir.magnitude);
+
+    // Move held object along with player
+    if (heldObject != null && heldRb != null)
+    {
+        Vector3 targetPos = holdPoint.position;
+        Vector3 moveVel = (targetPos - heldRb.position) / Time.fixedDeltaTime;
+        heldRb.linearVelocity = moveVel;
+    }
+
+    // Charging throw logic
+    if (isCharging && heldObject != null)
+    {
+        currentPower += chargeSpeed * Time.deltaTime;
+        currentPower = Mathf.Clamp(currentPower, minPower, maxPower);
+    }
+}
 
 
     public void CollectObject(InputAction.CallbackContext context)
@@ -162,6 +175,7 @@ public class Player : MonoBehaviour
         heldObject = null;
         heldRb = null;
     }
+    
     public GameObject Near()
     {
         float minDist = float.PositiveInfinity;
