@@ -713,13 +713,21 @@ PrefabInstance:
 '
       objectReference: {fileID: 0}
     - target: {fileID: 6639495811364448157, guid: 813cf0a6b92b6424ca6203404641dc18, type: 3}
+      propertyPath: m_fontSize
+      value: 170.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 6639495811364448157, guid: 813cf0a6b92b6424ca6203404641dc18, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: e4ea8edb00649a04e90c51de072c73ba, type: 2}
+      objectReference: {fileID: 11400000, guid: d4b1360ab37752147be75c72a4b621c5, type: 2}
+    - target: {fileID: 6639495811364448157, guid: 813cf0a6b92b6424ca6203404641dc18, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 170.03
+      objectReference: {fileID: 0}
     - target: {fileID: 6639495811364448157, guid: 813cf0a6b92b6424ca6203404641dc18, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: -7842349472590317070, guid: e4ea8edb00649a04e90c51de072c73ba, type: 2}
+      objectReference: {fileID: 989549173034060466, guid: d4b1360ab37752147be75c72a4b621c5, type: 2}
     - target: {fileID: 6639495811364448157, guid: 813cf0a6b92b6424ca6203404641dc18, type: 3}
       propertyPath: m_HorizontalAlignment
       value: 2
@@ -789,7 +797,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 6027000446103811311, guid: 813cf0a6b92b6424ca6203404641dc18, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 813cf0a6b92b6424ca6203404641dc18, type: 3}

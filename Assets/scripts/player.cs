@@ -67,11 +67,15 @@ public class Player : MonoBehaviour
     {
         if (currHealth <= 0)
         {
+            GameManager.Instance.SetScore(score);
             try
             {
                 audio_Manager.PlaySound(audio_Manager.death);
             }
-            catch { }
+            catch
+            {
+                Debug.Log("Hi");
+            }
             SceneManager.LoadSceneAsync(3);
         }
         if (invincibilityTimer >= 0)
@@ -111,6 +115,12 @@ void FixedUpdate()
         // Smooth rotate
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.fixedDeltaTime);
     }
+        if (direction.sqrMagnitude > 0.1f)
+        {
+            Vector3 lookDir = new Vector3(direction.x, 0f, direction.z);
+            Quaternion targetRotation = Quaternion.LookRotation(lookDir, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10f * Time.fixedDeltaTime);
+        }
 
     // Update holdPoint
     Vector3 offset = new Vector3(0, 0f, 3f);
@@ -156,13 +166,6 @@ void FixedUpdate()
             ThrowHeldObject();
         }
     }
-    // void LateUpdate()
-    // {
-    //     holdPoint.rotation = Quaternion.identity;
-    //     holdPoint.localPosition = new Vector3(1, 0, 0);
-    // }
-
-
     private void ThrowHeldObject()
     {
         if (heldObject == null || heldRb == null) return;

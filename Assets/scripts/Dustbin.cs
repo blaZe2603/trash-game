@@ -1,7 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
-
+using System.Collections;
 public class Dustbin : MonoBehaviour
 {
     public enum BinType
@@ -105,7 +105,46 @@ public class Dustbin : MonoBehaviour
                 Destroy(collision.gameObject);
                 try
                 {
+                    audio_Manager.PlaySound(audio_Manager.player_hit);
+                }
+                catch
+                {
+                    Debug.Log("Its fine");
+                }
+            }
+    
+            else if (
+                (CompareTag("Hazardous Bin") && !collision.collider.CompareTag("Hazardous")) ||
+                (CompareTag("General Bin") && !collision.collider.CompareTag("General")) ||
+                (CompareTag("Wet Bin") && !collision.collider.CompareTag("Wet")) ||
+                (CompareTag("Recyclable Bin") && !collision.collider.CompareTag("Recyclable"))
+            )
+            {
+                Destroy(collision.gameObject);
+                StartCoroutine(speedBoost());
+                try
+                {
                     audio_Manager.PlaySound(audio_Manager.enemy_hit);
+
+                }
+                catch
+                {
+                    Debug.Log("Its fine");
+                }
+            }
+            else if (
+                (CompareTag("Hazardous Bin") && !collision.collider.CompareTag("Hazardous")) ||
+                (CompareTag("General Bin") && !collision.collider.CompareTag("General")) ||
+                (CompareTag("Wet Bin") && !collision.collider.CompareTag("Wet")) ||
+                (CompareTag("Recyclable Bin") && !collision.collider.CompareTag("Recyclable"))
+            )
+            {
+                Destroy(collision.gameObject);
+                StartCoroutine(speedBoost());
+                try
+                {
+                    audio_Manager.PlaySound(audio_Manager.enemy_hit);
+
                 }
                 catch
                 {
@@ -138,6 +177,13 @@ public class Dustbin : MonoBehaviour
             Destroy(collision.gameObject);
         }
     }
+    IEnumerator speedBoost()
+    {
+        speed *= 2;
+        yield return new WaitForSeconds(3f);
+        speed /= 2;
+    }
+    
 
     IEnumerator speedBoost()
     {
